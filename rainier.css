@@ -1,9 +1,9 @@
 .btn {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 0px 20px;
   margin-bottom: 0;
   font-family: "Microsoft YaHei";
-  font-size: 14px;
+  font-size: 12px;
   font-weight: normal;
   text-align: center;
   white-space: nowrap;
@@ -17,8 +17,21 @@
           user-select: none;
   background-image: none;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 3px;
+  line-height: 27px;
 }
+a.btn{
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  *line-height: 31px;
+}
+
+input.btn{
+  *overflow: visible;
+  *margin-right: 5px !important;
+}
+
 .btn.disabled,
 .btn[disabled]{
   pointer-events: none;
@@ -107,20 +120,34 @@
 }
 
 .btn-big{
-  padding: 8px 22px;
+  padding: 0px 22px;
   font-size: 18px;
-  line-height: 1.33;
+  line-height: 39px;
+  *line-height: 29px;
   border-radius: 6px;
 }
 .btn-nor{
-  padding: 4px 20px;
+  padding: 0px 20px;
   font-size: 12px;
-  line-height: 1.5;
   border-radius: 3px;
+  line-height: 27px;
 }
 .btn-sml{
-  padding: 1px 5px;
+  padding: 0px 5px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 22px;
+  *line-height: 18px;
   border-radius: 3px;
+}
+
+a.btn-nor{
+  *line-height: 31px;
+}
+
+a.btn-big{
+  *line-height: 37px;
+}
+
+a.btn-sml{
+  *line-height: 22px;
 }
