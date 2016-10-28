@@ -162,3 +162,104 @@ a.btn-big{
 a.btn-sml{
   *line-height: 21px;
 }
+
+/*默认状态*/
+.input-text,
+.textarea,
+.select{
+  box-sizing:border-box;
+  border:solid 1px #aaaaaa;
+  border-radius: 3px;
+  width:50%;
+  -webkit-transition:all 0.2s linear 0s;
+  -moz-transition:all 0.2s linear 0s;
+  -o-transition:all 0.2s linear 0s;
+  transition:all 0.2s linear 0s;
+  margin:5px 10px;
+}
+.textarea{
+  height:auto;
+  font-size:14px;
+  padding:4px;
+}
+:-moz-placeholder {
+    color: #bebebe; opacity:1; 
+}
+::-moz-placeholder {
+    color: #bebebe;opacity:1;
+}
+input:-ms-input-placeholder{
+    color: #bebebe;opacity:1;
+}
+input::-webkit-input-placeholder{
+    color: #bebebe;opacity:1;
+}
+.size-sml{
+  font-size: 12px;
+  height: 23px;
+  *line-height: 23px;
+  padding: 2px 5px;
+}
+.size-nor{
+  font-size: 13px;
+  height: 27px;
+  *line-height: 27px;
+  padding: 3px 6px;
+}
+.size-big{
+  font-size: 16px;
+  height: 31px;
+  *line-height: 31px;
+  padding: 4px 7px;
+}
+.select.size-sml{
+  padding:0 1px;
+}
+.select.size-nor{
+  padding:0 2px;
+}
+.select.size-big{ 
+  padding:0 3px;
+}
+
+.input-text:hover,
+.textarea:hover,
+.select:hover{
+  border: solid 1px #3bb4f2;
+}
+
+.input-text:focus,
+.textarea:focus,
+.select:focus{
+  border:solid 1px #0f9ae0 \9;
+  border-color:rgba(82,168,236,0.8);
+  box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.input-text[disabled],
+.textarea[disabled],
+.input-text.disabled.focus,
+.textarea.disabled.focus,
+.select.disabled.focus{
+  background-color:#ededed;
+  cursor:default;
+  border-color: #ddd;
+  -webkit-box-shadow:inset 0 2px 2px #e8e7e7;
+  -moz-box-shadow:inset 0 2px 2px #e8e7e7;
+  box-shadow:inset 0 2px 2px #e8e7e7;
+}
+
+.input-text[disabled],
+.textarea[disabled]{
+  background-color:#e6e6e6;
+  cursor:default;
+}
+
+.input-text.box-shadow,
+.textarea.box-shadow,
+.select.box-shadow{
+  -ms-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
+  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
+  box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
+}
+
