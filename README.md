@@ -12,6 +12,11 @@
 <button class="btn btn-warnning">Button</button>
 <button class="btn btn-danger">Button</button>
 ```
+为了适配现在系统的风格，增加了本色灰色，鼠标悬浮变成蓝色的按钮</br>
+![](https://github.com/EaVanCN/rainier/raw/master/imgs/btn_sys.jpg)</br>
+``` html
+<button class="btn btn-sys btn-nor">btn-nor</button>
+```
 ####大小：</br>
 ![](https://github.com/EaVanCN/rainier/raw/master/imgs/btn_size.jpg)</br>
 使用下面类名会产生相对应按钮效果：</br>
