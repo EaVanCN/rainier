@@ -212,6 +212,11 @@ input::-webkit-input-placeholder{
   *line-height: 31px;
   padding: 4px 7px;
 }
+.textarea.size-sml,
+.textarea.size-nor,
+.textarea.size-big{
+  height: 110px;  
+}
 .select.size-sml{
   padding:0 1px;
 }
@@ -252,7 +257,7 @@ input::-webkit-input-placeholder{
 .input-text[disabled],
 .textarea[disabled]{
   background-color:#e6e6e6;
-  cursor:default;
+  cursor:not-allowed;
 }
 
 .input-text.box-shadow,
