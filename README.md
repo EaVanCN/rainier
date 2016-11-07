@@ -104,6 +104,24 @@
 </table>
 </div>
 ```
+##组件
+###1.按钮组：</br>
+####实例：</br>
+按钮组为您提供了一组并在一起的按钮，为div增加.btn-group类，在div中使用按钮即可，里面的按钮也像普通的按钮一样可以进行颜色，尺寸的设置</br>
+![](https://github.com/EaVanCN/rainier/raw/master/imgs/button-group.jpg)</br>
+```html
+    <div class="btn-group">
+        <button class="btn btn-sys" type="button">1</button>
+        <button class="btn btn-danger btn-nor" type="button">2</button>
+        <button class="btn btn-warning btn-nor" type="button">3</button>
+    </div>
+```
+####尺寸：</br>
+只要给 .btn-group 加上 .btn-group-*  类，就省得给按钮组的每一个按钮设置尺寸了</br>
+![](https://github.com/EaVanCN/rainier/raw/master/imgs/btn-group-size.jpg)</br>
+####一组按钮组：</br>
+将按钮组包在一个.group-container的div中，使得按钮组形成一组，排在一排
+![](https://github.com/EaVanCN/rainier/raw/master/imgs/btn-group-contain.jpg)</br>
 ##插件
 ###1.火焰灯插件：</br>
 火焰灯插件可以为您的导航栏提供一个很酷的鼠标浮动跟随的效果，我在原有的基础上进行了一下改进，使得该插件支持从cookie中记录当前位置，使得在跳转后不会忘记自己所在的位置</br>
