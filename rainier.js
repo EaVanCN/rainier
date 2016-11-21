@@ -178,3 +178,26 @@
 		}
 	})
 })(jQuery)
+
+/*--------------------------------------------------------------------------------------------------------
+									backTop V1.0 	2016-11-21
+
+页面无需dom文档，只需引入jquery，另外执行$(function(){$(window).on("scroll",backTopFun);backTopFun();});
+--------------------------------------------------------------------------------------------------------*/
+$(function(){
+	var $backTopEle = $('<div id="backTop" class="backTop"><div class="arrow-top"></div></div>').appendTo($("body")).click(function(){
+		$("html, body").animate({ scrollTop: 0 }, 200);
+	});
+})
+function backTopFun(){
+	var st = $(document).scrollTop(), winh = $(window).height();
+	(st > 0)? $('#backTop').show(): $('#backTop').hide();
+	
+	if(!window.XMLHttpRequest){
+		$('#backTop').css("top", st + winh - 166);
+	}
+};
+
+	
+
+
