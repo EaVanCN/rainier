@@ -197,7 +197,20 @@ function backTopFun(){
 		$('#backTop').css("top", st + winh - 166);
 	}
 };
-
+/*--------------------------------------------------------------------------------------------------------
+									dropdown V1.0 	2016-11-23
+--------------------------------------------------------------------------------------------------------*/
+$(function(){
+	$(".dropdown-toggle").click(function(){
+	    if($(this).data('showing') == "true"){
+	        $(this).next('.dropdown-menu').hide();
+	        $(this).data('showing','false');
+	    }else{
+	        $(this).next('.dropdown-menu').show();
+	        $(this).data('showing','true');
+	    }
+	})
+})
 	
 
 

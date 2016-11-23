@@ -1,6 +1,8 @@
 /*------------------------------------------------------------------
                              响应式栅格系统
 -------------------------------------------------------------------*/
+.clearfix::before, 
+.clearfix::after,
 .container:before,
 .container:after,
 .container-fluid:before,
@@ -10,6 +12,7 @@
   display: table;
   content: " ";
 }
+.clearfix::after,
 .container:after,
 .container-fluid:after,
 .row:after {
@@ -440,6 +443,9 @@
   border: 1px solid transparent;
   border-radius: 3px;
   line-height: 27px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
 }
 a.btn{
   box-sizing:border-box;
@@ -477,6 +483,8 @@ input.btn{
 .btn.focus {
   color: #333;
   text-decoration: none;
+  background-color: #e7e7e7;
+  border-color: #999;
 }
 .btn:active,
 .btn.active {
@@ -927,4 +935,71 @@ th.table-warning{
 }  
 .backTop:hover{
   background:#2C70A8;
+}
+/*------------------------------------------------------------------
+                        HERE , CSS FOR DROPDOWN
+-------------------------------------------------------------------*/
+.dropdown{
+    display: inline-block;
+    position:relative;
+}
+.dropdown-toggle{
+    position: relative;
+}
+.dropdown-menu{
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+    display: none;
+    float: left;
+    font-size: 14px;
+    list-style: outside none none;
+    margin: 2px 0 0;
+    min-width: 160px;
+    padding: 5px 0;
+    position: absolute;
+    text-align: left;
+    left:0;
+    top: 100%;
+    z-index: 1000;
+}
+.dropdown-menu > li > a {
+    clear: both;
+    color: #333; 
+    display: block;
+    font-weight: 400;
+    line-height: 1.42857;
+    padding: 3px 20px; 
+    white-space: nowrap;
+    text-decoration:none;
+}
+.dropdown-menu-right{
+    left: 100%;
+    top:0;
+    margin: 0 2px;
+}
+
+.arrow-down{
+    display: inline-block;
+    position:relative;
+    width:0;
+    height:0;
+    border-style: solid;
+    border-width: .3em;
+    border-color:transparent;
+    border-top-color: #333;
+    margin-left: .3em;
+}
+.arrow-right{
+     display: inline-block;
+    position:relative;
+    width:0;
+    height:0;
+    border-style: solid;
+    border-width: .3em;
+    border-color:transparent;
+    border-left-color: #333;
+    margin-left: .3em;
 }
