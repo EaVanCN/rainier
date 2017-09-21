@@ -423,7 +423,7 @@
 /*------------------------------------------------------------------
                           HERE IS BUTTONS
 -------------------------------------------------------------------*/
-.btn {
+.ra-btn {
   display: inline-block;
   padding:0 16px;
   margin-bottom: 0;
@@ -447,20 +447,20 @@
   background-color: #fff;
   border-color: #ccc;
 }
-a.btn{
+a.ra-btn{
   box-sizing:border-box;
   -moz-box-sizing:border-box;
   -webkit-box-sizing:border-box;
   *line-height: 31px;
 }
 
-input.btn{
+input.ra-btn{
   *overflow: show;
   *margin-right: 5px !important;
 }
 
-.btn.disabled,
-.btn[disabled]{
+.ra-btn.disabled,
+.ra-btn[disabled]{
   pointer-events: none;
   cursor:not-allowed;
   filter: alpha(opacity=65);
@@ -468,98 +468,98 @@ input.btn{
           box-shadow: none;
   opacity: .65;
 }
-.btn:focus,
-.btn:active:focus,
-.btn.active:focus,
-.btn.focus,
-.btn:active.focus,
-.btn.active.focus {
+.ra-btn:focus,
+.ra-btn:active:focus,
+.ra-btn.active:focus,
+.ra-btn.focus,
+.ra-btn:active.focus,
+.ra-btn.active.focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-.btn:hover,
-.btn:focus,
-.btn.focus {
+.ra-btn:hover,
+.ra-btn:focus,
+.ra-btn.focus {
   color: #333;
   text-decoration: none;
   background-color: #e7e7e7;
   border-color: #999;
 }
-.btn:active,
-.btn.active {
+.ra-btn:active,
+.ra-btn.active {
   background-image: none;
   outline: 0;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
           box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 
-.btn-default{
+.ra-btn-default{
   color: #333;
   background-color: #fff;
   border-color: #ccc;
 }
-.btn-default:hover{
+.ra-ra-btn-default:hover{
   color: #333;
   background-color: #e7e7e7;
   border-color: #999;
 }
 
-.btn-original{
+.ra-btn-original{
   color: #fff;
   background-color: #1a80e6;
   border-color: #2389a6;
 }
-.btn-original:hover{
+.ra-btn-original:hover{
   color: #fff;
   background-color: #0867cd;
   border-color: #096f8c;
 }
-.btn-success {
+.ra-btn-success {
   color: #fff;
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
-.btn-success:hover{
+.ra-btn-success:hover{
   color: #fff;
   background-color: #449d44;
   border-color: #398439;
 }
 
-.btn-warning {
+.ra-btn-warning {
   color: #fff;
   background-color: #f0ad4e;
   border-color: #eea236;
 }
-.btn-warning:hover{
+.ra-btn-warning:hover{
   color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
 
-.btn-danger {
+.ra-btn-danger {
   color: #fff;
   background-color: #d9534f;
   border-color: #d43f3a;
 }
-.btn-danger:hover{
+.ra-btn-danger:hover{
   color: #fff;
   background-color: #c9302c;
   border-color: #ac2925;
 }
 
-.btn-sys{
+.ra-btn-sys{
   color: #333;
   background-color: #f2f2f2;
   border-color: #999;
 }
-.btn-sys:hover{
+.ra-btn-sys:hover{
   color: #fff;
   background-color: #3399ff;
   border-color: #0066ff;
 }
 
-.btn-big{
+.ra-btn-big{
   padding: 0px 22px;
   font-size: 18px;
   line-height: 39px;
@@ -567,14 +567,14 @@ input.btn{
   border-radius: 6px;
 }
 
-.btn-nor{
+.ra-btn-nor{
   padding: 0px 16px;
   font-size: 12px;
   line-height: 27px;
   *line-height: 25px;
   border-radius: 4px;
 }
-.btn-sml{
+.ra-btn-sml{
   padding: 0px 5px;
   font-size: 12px;
   line-height:18px;
@@ -582,55 +582,55 @@ input.btn{
   border-radius: 3px;
 }
 
-a.btn-nor{
+a.ra-btn-nor{
   *line-height: 31px;
 }
 
-a.btn-big{
+a.ra-btn-big{
   *line-height: 37px;
 }
 
-a.btn-sml{
+a.ra-btn-sml{
   *line-height: 21px;
 }
 /*------------------------------------------------------------------
                         HERE IS BUTTON-GROUP
 -------------------------------------------------------------------*/
-.group-container div[class^="btn-group"]{
+.ra-group-container div[class^="ra-btn-group"]{
     display: inline-block;
 }
-div[class^="btn-group"]{
+div[class^="ra-btn-group"]{
         font-size: 0;
 }
-div[class^="btn-group"] .btn{
+div[class^="ra-btn-group"] .ra-btn{
     margin-left:-1px;
 }
-div[class^="btn-group"] .btn:not(:first-child):not(:last-child){ 
+div[class^="ra-btn-group"] .ra-btn:not(:first-child):not(:last-child){ 
     border-radius:0
 }
-div[class^="btn-group"] > .btn:first-child:not(:last-child){
+div[class^="ra-btn-group"] > .ra-btn:first-child:not(:last-child){
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
 }
-div[class^="btn-group"] > .btn:last-child:not(:first-child){
+div[class^="ra-btn-group"] > .ra-btn:last-child:not(:first-child){
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
 }
-.btn-group-sml .btn{
+.ra-btn-group-sml .ra-btn{
     padding: 0px 5px;
     font-size: 12px;
     line-height:18px;
     *line-height: 17px;
     border-radius: 3px;
 }
-.btn-group-nor .btn{
+.ra-btn-group-nor .ra-btn{
     padding: 0px 16px;
     font-size: 12px;
     line-height: 27px;
     *line-height: 25px;
     border-radius: 4px;
 }
-.btn-group-big .btn{
+.ra-btn-group-big .ra-btn{
     padding: 0px 22px;
     font-size: 18px;
     line-height: 39px;
@@ -640,9 +640,9 @@ div[class^="btn-group"] > .btn:last-child:not(:first-child){
 /*------------------------------------------------------------------
                         HERE IS FORM ELEMENTS
 -------------------------------------------------------------------*/
-.input-text,
-.textarea,
-.select{
+.ra-input-text,
+.ra-textarea,
+.ra-select{
   box-sizing:border-box;
   border:solid 1px #aaaaaa;
   border-radius: 3px;
@@ -652,20 +652,20 @@ div[class^="btn-group"] > .btn:last-child:not(:first-child){
   transition:all 0.2s linear 0s;
 }
 
-.input-text.form-danger,
-.textarea.form-danger,
-.select.form-danger{
+.ra-input-text.ra-form-danger,
+.ra-textarea.ra-form-danger,
+.ra-select.ra-form-danger{
     border:solid 1px #d43f3a;
     color:#d9534f;
 }
-.input-text.form-success,
-.textarea.form-success,
-.select.form-success{
+.ra-input-text.ra-form-success,
+.ra-textarea.ra-form-success,
+.ra-select.ra-form-success{
     border:solid 1px #4cae4c;
     color:#5cb85c;
 }
 
-.textarea{
+.ra-textarea{
   height:auto;
   font-size:14px;
   padding:4px;
@@ -682,61 +682,61 @@ input:-ms-input-placeholder{
 input::-webkit-input-placeholder{
     color: #bebebe;opacity:1;
 }
-.size-sml{
+.ra-size-sml{
   font-size: 12px;
   height: 23px;
   *line-height: 23px;
   padding: 2px 5px;
 }
-.size-nor{
+.ra-size-nor{
   font-size: 13px;
   height: 27px;
   *line-height: 27px;
   padding: 3px 6px;
   *padding: 1px 6px;
 }
-.size-big{
+.ra-size-big{
   font-size: 16px;
   height: 31px;
   *line-height: 31px;
   padding: 4px 7px;
 }
-.textarea.size-sml,
-.textarea.size-nor,
-.textarea.size-big{
+.ra-textarea.ra-size-sml,
+.ra-textarea.ra-size-nor,
+.ra-textarea.ra-size-big{
   height: 110px;  
 }
-.select.size-sml{
+.ra-select.ra-size-sml{
   padding:0 1px;
 }
-.select.size-nor{
+.ra-select.ra-size-nor{
   padding:0 2px;
 }
-.select.size-big{ 
+.ra-select.ra-size-big{ 
   padding:0 3px;
 }
 
-.input-text:hover,
-.textarea:hover,
-.select:hover{
+.ra-input-text:hover,
+.ra-textarea:hover,
+.ra-select:hover{
   color:#000;
   border: solid 1px #3bb4f2;
 }
 
-.input-text:focus,
-.textarea:focus,
-.select:focus{
+.ra-input-text:focus,
+.ra-textarea:focus,
+.ra-select:focus{
   color:#000;
   border:solid 1px #0f9ae0 \9;
   border-color:rgba(82,168,236,0.8);
   box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
 }
 
-.input-text[disabled],
-.textarea[disabled],
-.input-text.disabled.focus,
-.textarea.disabled.focus,
-.select.disabled.focus{
+.ra-input-text[disabled],
+.ra-textarea[disabled],
+.ra-input-text.disabled.focus,
+.ra-textarea.disabled.focus,
+.ra-select.disabled.focus{
   background-color:#ededed;
   cursor:default;
   border-color: #ddd;
@@ -745,15 +745,15 @@ input::-webkit-input-placeholder{
   box-shadow:inset 0 2px 2px #e8e7e7;
 }
 
-.input-text[disabled],
-.textarea[disabled]{
+.ra-input-text[disabled],
+.ra-textarea[disabled]{
   background-color:#e6e6e6;
   cursor:not-allowed;
 }
 
-.input-text.box-shadow,
-.textarea.box-shadow,
-.select.box-shadow{
+.ra-input-text.box-shadow,
+.ra-textarea.box-shadow,
+.ra-select.box-shadow{
   -ms-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
   -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
@@ -772,29 +772,29 @@ table{
   border-collapse:collapse;
   border-spacing:0;
 }
-.table{
+.ra-table{
   border:1px solid #dddddd;
   font-family: "Microsoft YaHei";
   font-size: 14px;
   color:#555555;
 }
-.table-striped tbody > tr:nth-child(odd),
-.table-striped tbody > tr:nth-child(odd){
+.ra-table-striped tbody > tr:nth-child(odd),
+.ra-table-striped tbody > tr:nth-child(odd){
   background-color:#F7FaF0;
 }
-.table-hover tbody>tr:hover{
+.ra-table-hover tbody>tr:hover{
   background-color:#f0f0f0;
 }
-.table caption{
+.ra-table caption{
   color: #999;
   text-align: left;
   font-size: 13px;
   font-style: italic;
 }
-.table tr{
+.ra-table tr{
   border-bottom: 1px solid #dddddd;
 }
-.table td,.table th{
+.ra-table td,.table th{
   white-space:nowrap; 
   padding:8px;
   font-weight: normal;
@@ -802,47 +802,47 @@ table{
   border-right: 1px solid #dddddd;
 }
 
-.text-l{
+.ra-text-l{
   text-align: left;
 }
-.text-c{
+.ra-text-c{
   text-align: center;
 }
-.text-r{
+.ra-text-r{
   text-align: right;
 }
-tr.text-bold,
-td.text-bold,
-th.text-bold{
+tr.ra-text-bold,
+td.ra-text-bold,
+th.ra-text-bold{
   font-weight: bold;
   color: #3d3d3d;
 }
-table.table-danger,
-tr.table-danger,
-td.table-danger,
-th.table-danger{
+table.ra-table-danger,
+tr.ra-table-danger,
+td.ra-table-danger,
+th.ra-table-danger{
   background:#fc7b77;
 }
-table.table-success,
-tr.table-success,
-td.table-success,
-th.table-success{
+table.ra-table-success,
+tr.ra-table-success,
+td.ra-table-success,
+th.ra-table-success{
   background:#8ce88c;
 }
-table.table-warning,
-tr.table-warning,
-td.table-warning,
-th.table-warning{
+table.ra-table-warning,
+tr.ra-table-warning,
+td.ra-table-warning,
+th.ra-table-warning{
     background:#f7a734;
 }
-.table-container-overflow{
+.ra-table-container-overflow{
   overflow:auto;
 }
 
 /*------------------------------------------------------------------
                         HERE , CSS FOR TIPS
 -------------------------------------------------------------------*/
-#tooltip{
+#ra-tooltip{
   box-sizing:border-box; 
   position:absolute; 
   border:1px solid #000;
@@ -853,35 +853,35 @@ th.table-warning{
   line-height:21px;
   font-size: 12px;
 }
-.tooltip-arrow {
+.ra-tooltip-arrow {
   position: absolute;
   width: 0;
   height: 0;
   border-color: transparent;
   border-style: solid;
 }
-.tooltip-top .tooltip-arrow {
+.ra-tooltip-top .ra-tooltip-arrow {
   left: 50%;
   bottom: -6px;
   margin-left: -5px;
   border-width: 5px 5px 0 5px;
   border-top-color: #000;
 }
-.tooltip-right .tooltip-arrow {
+.ra-tooltip-right .ra-tooltip-arrow {
   top: 50%;
   left: -6px;
   margin-top: -5px;
   border-width: 5px 5px 5px 0;
   border-right-color: #000;
 }
-.tooltip-bottom .tooltip-arrow {
+.ra-tooltip-bottom .ra-tooltip-arrow {
   left: 50%;
   top: -6px;
   margin-left: -5px;
   border-width: 0 5px 5px 5px;
   border-bottom-color: #000;
 }
-.tooltip-left .tooltip-arrow {
+.ra-tooltip-left .ra-tooltip-arrow {
   top: 50%;
   right: -6px;
   margin-top: -5px;
@@ -891,7 +891,7 @@ th.table-warning{
 /*------------------------------------------------------------------
                         HERE , CSS FOR BACKTOP
 -------------------------------------------------------------------*/
-.backTop{
+.ra-backtop{
   position:fixed;
   bottom:10px;
   right:20px;
@@ -903,7 +903,7 @@ th.table-warning{
   border-radius: 8px;
   cursor: pointer;
 }
-.arrow-top{
+.ra-back-top-arrow{
   position: relative; 
   width:0;
   height:0;
@@ -914,10 +914,10 @@ th.table-warning{
   top:15px;
   margin:0 auto;
 }
-.arrow-top::before, .arrow-top::after {
+.ra-back-top-arrow::before, .ra-back-top-arrow::after {
   position: absolute;
 }  
-.arrow-top::before {
+.ra-back-top-arrow::before {
   content: "";
   width:40px;
   height:3px;
@@ -925,7 +925,7 @@ th.table-warning{
   top:-4px;
   left:-20px;
 }  
-.arrow-top::after {
+.ra-back-top-arrow::after {
   content: "";
   width:20px;
   height:10px;
@@ -933,20 +933,20 @@ th.table-warning{
   top:15px;
   left:-10px;
 }  
-.backTop:hover{
+.ra-backtop:hover{
   background:#2C70A8;
 }
 /*------------------------------------------------------------------
                         HERE , CSS FOR DROPDOWN
 -------------------------------------------------------------------*/
-.dropdown{
+.ra-dropdown{
     display: inline-block;
     position:relative;
 }
-.dropdown-toggle{
+.ra-dropdown-toggle{
     position: relative;
 }
-.dropdown-menu{
+.ra-dropdown-menu{
     background-clip: padding-box;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -958,14 +958,17 @@ th.table-warning{
     list-style: outside none none;
     margin: 2px 0 0;
     min-width: 160px;
-    padding: 5px 0;
+    padding: 0;
     position: absolute;
     text-align: left;
     left:0;
     top: 100%;
     z-index: 1000;
 }
-.dropdown-menu > li > a {
+.ra-dropdown-menu > li:hover{
+    box-shadow: 0 0 5px 1px #C4BCBC inset;
+}
+.ra-dropdown-menu > li > a {
     clear: both;
     color: #333; 
     display: block;
@@ -975,13 +978,13 @@ th.table-warning{
     white-space: nowrap;
     text-decoration:none;
 }
-.dropdown-menu-right{
+.ra-dropdown-menu-right{
     left: 100%;
     top:0;
     margin: 0 2px;
 }
 
-.arrow-down{
+.ra-dropdown-arrow-down{
     display: inline-block;
     position:relative;
     width:0;
@@ -992,7 +995,7 @@ th.table-warning{
     border-top-color: #333;
     margin-left: .3em;
 }
-.arrow-right{
+.ra-dropdown-arrow-right{
      display: inline-block;
     position:relative;
     width:0;
