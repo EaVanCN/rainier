@@ -421,6 +421,93 @@
   .hide-print {display: none !important}
 }
 /*------------------------------------------------------------------
+                       标题文字大小（h1~h6）
+-------------------------------------------------------------------*/
+h1,h2,h3,h4,h5,h6{font-weight:500;line-height:1.1;color:inherit}
+h1 small,h2 small,h3 small,h4 small,h5 small,h6 small,h1 .small,h2 .small,h3 .small,h4 .small,h5 .small,h6 .small{font-weight:normal;line-height:1;color:#999}
+h1,h2,h3{margin-top:20px;margin-bottom:10px}
+h1 small,h2 small,h3 small,h1 .small,h2 .small,h3 .small{font-size:65%}
+h4,h5,h6{margin-top:10px;margin-bottom:10px}
+h4 small,h5 small,h6 small,h4 .small,h5 .small,h6 .small{font-size:75%}
+h1{font-size:36px}
+h2{font-size:30px}
+h3{font-size:24px}
+h4{font-size:18px}
+h5{font-size:14px}
+h6{font-size:12px}
+/* 文字的居左，居中，居右 */
+.ra-text-l{
+  text-align: left;
+}
+.ra-text-c{
+  text-align: center;
+}
+.ra-text-r{
+  text-align: right;
+}
+/* 文字溢出省略号 */
+.text-overflow{overflow: hidden;text-overflow: ellipsis;white-space: nowrap}
+/* 文字颜色 */
+
+/*主要颜色*/
+.c-primary,.c-primary a,a.c-primary{color:#5a98de}
+.c-primary a:hover,a.c-primary:hover{ color:#5a98de}
+ 
+/*次主色*/
+.c-secondary,.c-secondary a,a.c-secondary{color:#555}
+.c-secondary a:hover,a.c-secondary:hover{ color:#555}
+ 
+/*强调色—成功*/
+.c-success,.c-success a,a.c-success{color:#5eb95e}
+.c-success a:hover,a.c-success:hover{ color:#5eb95e}
+ 
+/*强调色—危险*/
+.c-danger,.c-danger a,a.c-danger{color:#dd514c}
+.c-danger a:hover,a.c-danger:hover{ color:#dd514c}
+ 
+/*强调色—警告*/
+.c-warning,.c-warning a,a.c-warning{color:#f37b1d}
+.c-warning a:hover,a.c-warning:hover{ color:#f37b1d}
+ 
+/*强调色—错误*/
+.c-error,.c-error a,a.c-error{color:#c00}
+.c-error a:hover,a.c-error:hover{ color:#c00}
+ 
+/*辅助色—浅黑*/
+.c-333,.c-333 a,a.c-333{color:#333}
+.c-333 a:hover,a.c-333:hover{ color:#333}
+ 
+/*辅助色—灰色*/
+.c-666,.c-666 a,a.c-666{color:#666}
+.c-666 a:hover,a.c-666:hover{ color:#666}
+.c-999,.c-999 a,a.c-999{color:#999}
+.c-999 a:hover,a.c-999:hover{color:#999}
+ 
+/*标准色—红色*/
+.c-red,.c-red a,a.c-red{color:red}
+.c-red a:hover,a.c-red:hover{ color:red}
+ 
+/*标准色—绿色*/
+.c-green,.c-green a,a.c-green{color:green}
+.c-red a:hover,a.c-red:hover{color:green}
+ 
+/*标准色—蓝色*/
+.c-blue,.c-blue a,a.c-blue{color:blue}
+.c-blue a:hover,a.c-blue:hover{color:blue}
+ 
+/*标准色—白色*/
+.c-white,.c-white a,a.c-white{color:white}
+.c-white a:hover,a.c-white:hover{color:white}
+ 
+/*标准色—黑色*/
+.c-black,.c-black a{color:black}
+.c-black a:hover,a.c-black:hover{color:black}
+ 
+/*标准色—橙色*/
+.c-orange,.c-orange a,a.c-orange{color:orange}
+.c-orange a:hover,a.c-orange:hover{color:orange}
+
+/*------------------------------------------------------------------
                           HERE IS BUTTONS
 -------------------------------------------------------------------*/
 .ra-btn {
@@ -800,16 +887,6 @@ table{
   font-weight: normal;
   border-bottom:1px solid #dddddd;
   border-right: 1px solid #dddddd;
-}
-
-.ra-text-l{
-  text-align: left;
-}
-.ra-text-c{
-  text-align: center;
-}
-.ra-text-r{
-  text-align: right;
 }
 tr.ra-text-bold,
 td.ra-text-bold,
