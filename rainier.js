@@ -1,9 +1,8 @@
-var Rainier = {
-	//返回顶部实际执行函数
+var RainierFn = {
+	//返回顶部执行函数
 	backTopFun : function (){
 		var st = $(document).scrollTop(), winh = $(window).height();
 		(st > 0)? $('#ra-backtop').show(): $('#ra-backtop').hide();
-		
 		if(!window.XMLHttpRequest){
 			$('#ra-backtop').css("top", st + winh - 166);
 		}
@@ -12,7 +11,7 @@ var Rainier = {
 /*--------------------------------------------------------------------------------------------------------
 									backtop V2.0 	2017-09-20
 
-页面无需dom文档，只需引入jquery，另外执行$(function(){$(window).on("scroll",Rainier.backTopFun);Rainier.backTopFun();});
+页面无需dom文档，只需引入jquery，另外执行$(function(){$(window).on("scroll",RainierFn.backTopFun);RainierFn.backTopFun();});
 --------------------------------------------------------------------------------------------------------*/
 $(function(){
 	var $backTopEle = $('<div id="ra-backtop" class="ra-backtop"><div class="ra-back-top-arrow"></div></div>').appendTo($("body")).click(function(){
