@@ -26,7 +26,7 @@ Rainier.prototype.compiler = function(){            //将页面上指令进行�
         });
         ele.innerHTML = html;
     };
-    var eles = document.querySelectorAll("[ra-text],[ra-textnode],[ra-model],[ra-for],[ra-if],[ra-on]");
+    var eles = document.querySelectorAll("[ra-text],[ra-textnode],[ra-model],[ra-for],[ra-if],[ra-on],[ra-show]");
     for (var j = 0, l = eles.length; j < l; j++) {
         var curEle = eles[j];
         var curEleAttrs = curEle.attributes;            //获取所有属性
@@ -57,7 +57,6 @@ Rainier.prototype.watcher = function(reactObj){
         dataModel = reactObj.cmd_val;
         self._data[dataModel] = this.value;
     })
-
 }
 
 Rainier.prototype.observer = function(){         //监控viewmodel的变化，调用updater进行view的刷新
@@ -88,6 +87,37 @@ var updater = (function(){                                  //指令不同的操
         },
         "ra-model" : function(_vm, key, reactObj){
             _vm.watcher(reactObj);
+        },
+        "ra-for" : function(_vm, key, reactObj){
+            reactObj.node.style = reactObj
+        },
+        "ra-if" : function(_vm, key, reactObj){
+            if(_vm._data[reactObj.cmd_val]){
+                 if(reactObj.node._nextSibling){
+                    reactObj.node._parent.insertBefore(reactObj.node,reactObj.node._nextSibling);
+                 }else{
+                    reactObj.node._parent.appendChild(reactObj.node);
+                }
+            }else{
+                reactObj.node._nextSibling = reactObj.node.nextSibling;         //暂存其父节点和其下一个兄弟节点，然后再插入的时候如果有下一个兄弟，就直接插兄弟后面，如果没有，就在父节点中插入
+                reactObj.node._parent = reactObj.node.parentNode;     
+                reactObj.node.parentNode.removeChild(reactObj.node);
+            }
+        },
+        "ra-show" : function(_vm, key, reactObj){
+            if(!reactObj.node._displayMark){
+                reactObj.node._displayMark = "mark";
+                if(reactObj.node.style.display === "none"){
+                    reactObj.node._displayType = "unset";
+                }else{
+                    reactObj.node._displayType = utils.getStyle(reactObj.node, "display");
+                }
+            }
+            if(_vm._data[reactObj.cmd_val]){
+                reactObj.node.style.display = reactObj.node._displayType || reactObj.node.style.display;
+            }else{
+                reactObj.node.style.display = "none";
+            }
         }
     };
     function update(_vm, key, reactObj){
@@ -99,7 +129,7 @@ var updater = (function(){                                  //指令不同的操
 })();
 
 var cmdHandler = function(){
-    var vm_name, textEle;          //textEle表示创建的文本节点，vm_name表示this._data中数据的名称;
+    var vm_name, textEle;                       //textEle表示创建的文本节点，vm_name表示this._data中数据的名称;
     var Cmds = {
         "ra-text" : function(node){
             vm_name = node.getAttribute('ra-text');
@@ -126,6 +156,7 @@ var cmdHandler = function(){
                 this.reactData[vm_name] = [];
             }
             this.reactData[vm_name].push({node:node,cmd_key:"ra-model",cmd_val:vm_name,val:this._data[vm_name]});
+            node.removeAttribute('ra-model');
         },
         "ra-for" : function(node){
             var tempAttr = node.getAttribute('ra-for');
@@ -134,6 +165,7 @@ var cmdHandler = function(){
                 this.reactData[vm_name] = [];
             }
             this.reactData[vm_name].push({node:node,cmd_key:"ra-for",cmd_val:tempAttr,val:this._data[vm_name]});
+            node.removeAttribute('ra-for');
         },
         "ra-if" : function(node){
             vm_name = node.getAttribute('ra-if');
@@ -141,6 +173,7 @@ var cmdHandler = function(){
                 this.reactData[vm_name] = [];
             }
             this.reactData[vm_name].push({node:node,cmd_key:"ra-if",cmd_val:vm_name,val:this._data[vm_name]});
+            node.removeAttribute('ra-if');
         },
         "ra-on" : function(node){
             vm_name = node.getAttribute('ra-on');
@@ -148,6 +181,15 @@ var cmdHandler = function(){
                 this.reactData[vm_name] = [];
             }
             this.reactData[vm_name].push({node:node,cmd_key:"ra-on",cmd_val:vm_name,val:this._data[vm_name]});
+            node.removeAttribute('ra-on');
+        },
+        "ra-show" : function(node){
+            vm_name = node.getAttribute('ra-show');
+            if(!this.reactData[vm_name]) {
+                this.reactData[vm_name] = [];
+            }
+            this.reactData[vm_name].push({node:node,cmd_key:"ra-show",cmd_val:vm_name,val:this._data[vm_name]});
+            node.removeAttribute('ra-show');
         }
     }
     function reactCmdWithNode(cmd,node){
@@ -175,6 +217,18 @@ var utils = {                                    //可能使用到的工具
             if(!obj && typeof obj != "undefined" && obj != 0) return "null";
             if(Object.prototype.toString.call(obj) == "[object Array]") return "array";
             return "object";
+        }
+    },
+    getStyle : function(node,attr){                         //获取计算后的样式
+        if(typeof getComputedStyle != 'undefined'){
+            var value = getComputedStyle(node,null).getPropertyValue(attr);
+            return attr == 'opacity' ? value * 100 : value; //兼容不透明度，如果是不透明度，则返回整数方便计算
+        }else if(typeof node.currentStyle != 'undefined'){
+            if(attr == 'opacity'){ //兼容不透明度
+                return Number(node.currentStyle.getAttribute('filter').match(/(?:opacity[=:])(\d+)/)[1]);
+            }else{
+                return node.currentStyle.getAttribute(attr);
+            }
         }
     }
 };
