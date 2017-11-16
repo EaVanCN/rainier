@@ -21,8 +21,13 @@ Rainier.prototype.compiler = function(){            //将页面上指令进行�
     var textEle, vm_name, otherEles;                //textEle表示创建的文本节点，vm_name表示this._data中数据的名称;otherEles表示页面其他指令部分
     for (var i = 0, length = this._ele.length; i < length; i++){
         var ele = this._ele[i], html = ele.innerHTML;
-        html = html.replace(/\{\{(.*?)\}\}/g, function(a, b){       
-            return '<span ra-textnode="'+ b +'"></span>';
+        html = html.replace(/\{\{(.*?)\}\}/g, function(a, b){    
+            if(b.indexOf(".") > 0){
+                return '<span ra-deep="true" ra-textnode="'+ b +'"></span>';
+            }else{
+                return '<span ra-textnode="'+ b +'"></span>';
+            }
+           
         });
         ele.innerHTML = html;
     };
@@ -64,12 +69,14 @@ Rainier.prototype.observer = function(){         //监控viewmodel的变化，�
     Object.keys(self.reactData).forEach(function(key){
         Object.defineProperty(self._data, key, {
             get : function(){
-                return self.reactData[key].val;
+                return self.reactData[key][0].val;
             },
             set : function(newVal) {
-                if(newVal != self._data[key]) {
-                    self.reactData[key].val = newVal;          
-                    for(var i = 0,l = self.reactData[key].length; i<l; i++){
+                if(newVal !== self._data[key]) {
+                    self.reactData[key].forEach(function(){
+                        this.val = newVal; 
+                    })         
+                    for(var i = 0,l = self.reactData[key].length; i<l; i++){    //self表示该vm对象，key表示数据的名称，最后一个参数表示对应的映射对象
                         updater.update(self, key, self.reactData[key][i]);
                     }
                 }
@@ -80,10 +87,28 @@ Rainier.prototype.observer = function(){         //监控viewmodel的变化，�
 var updater = (function(){                                  //指令不同的操作会调用不同的updater进行view的刷新
     var updateFn = {
         "ra-textnode" : function(_vm, key, reactObj){       //_vm对象, key：数据的名称, reactObj：映射关系对象
-            reactObj.node.nodeValue = _vm._data[key];
+            var key_val =  _vm._data[key];
+            if(reactObj.cmd_val.split(".").length > 0){             //如果是一个引用类型的变量，且取值取的不是第一级值
+                var tempArr = reactObj.cmd_val.split(".");
+                var temp = _vm._data[tempArr[0]];
+                for(var i = 1,l = tempArr.length; i < l; i++){
+                    temp = temp[tempArr[i]];
+                }
+                key_val = temp;
+            }
+            reactObj.node.nodeValue = key_val;
         },
         "ra-text" : function(_vm, key, reactObj){
-            reactObj.node.nodeValue = _vm._data[key];
+            var key_val =  _vm._data[key];
+            if(reactObj.cmd_val.split(".").length > 0){             //如果是一个引用类型的变量，且取值取的不是第一级值
+                var tempArr = reactObj.cmd_val.split(".");
+                var temp = _vm._data[tempArr[0]];
+                for(var i = 1,l = tempArr.length; i < l; i++){
+                    temp = temp[tempArr[i]];
+                }
+                key_val = temp;
+            }
+            reactObj.node.nodeValue = key_val;
         },
         "ra-model" : function(_vm, key, reactObj){
             _vm.watcher(reactObj);
@@ -132,22 +157,45 @@ var cmdHandler = function(){
     var vm_name, textEle;                       //textEle表示创建的文本节点，vm_name表示this._data中数据的名称;
     var Cmds = {
         "ra-text" : function(node){
+            var vm_temp_val,tempArr;
             vm_name = node.getAttribute('ra-text');
-            if(!this.reactData[vm_name]) {
-                this.reactData[vm_name] = [];
+            vm_temp_val = this._data[vm_name];
+           
+            tempArr = vm_name.split(".");
+            if(tempArr.length > 0){   //表示该变量是一个对象，且是其深节点层次的值
+                var tempArr = vm_name.split(".");
+                var temp = this._data[tempArr[0]];
+                for(var i = 1,l = tempArr.length; i < l; i++){
+                    temp = temp[tempArr[i]];
+                }
+                vm_temp_val = temp;
+            }
+            if(!this.reactData[tempArr[0]]) {
+                this.reactData[tempArr[0]] = [];
             }
             textEle = document.createTextNode(" ");
-            this.reactData[vm_name].push({node:textEle,cmd_key:"ra-text",cmd_val:vm_name,val:this._data[vm_name]});
+            this.reactData[tempArr[0]].push({node:textEle,cmd_key:"ra-text",cmd_val:vm_name,val:this._data[tempArr[0]]});
             node.appendChild(textEle);
             node.removeAttribute('ra-text');
         },
         "ra-textnode" : function(node){
+            var vm_temp_val,tempArr;
             vm_name = node.getAttribute('ra-textnode');
-            if(!this.reactData[vm_name]) {
-                this.reactData[vm_name] = [];
+            vm_temp_val = this._data[vm_name];
+
+            tempArr = vm_name.split(".");
+            if(node.getAttribute("ra-deep")){   //表示该变量是一个对象，且是其深节点层次的值
+                var temp = this._data[tempArr[0]];
+                for(var i = 1,l = tempArr.length; i < l; i++){
+                    temp = temp[tempArr[i]];
+                }
+                vm_temp_val = temp;
+            }
+            if(!this.reactData[tempArr[0]]) {
+                this.reactData[tempArr[0]] = [];
             }
             textEle = document.createTextNode(" ");
-            this.reactData[vm_name].push({node:textEle,cmd_key:"ra-textnode",cmd_val:vm_name,val:this._data[vm_name]});
+            this.reactData[tempArr[0]].push({node:textEle,cmd_key:"ra-textnode",cmd_val:vm_name,val:this._data[tempArr[0]]});
             node.parentNode.replaceChild(textEle,node);
         },
         "ra-model" : function(node){
