@@ -8,12 +8,16 @@ var Rainier = function(option){
 }
 Rainier.prototype.init = function(option){
     this._ele = typeof option.el == "string" ? document.querySelectorAll(option.el) : option.el;    //被绑定（mounted）的DOM
-    this._data = option.data || {};                                                                 //model
+    this._data = option.data || {};
+    this._cloneObj = utils.cloneObj(this._data);                                                                 //model
     this._methods = option.methods || {};                                                           //可以绑定的方法（暂不实现）
     this.reactData = {};                                                                            //用于viewmodel和DOM之间的映射（即viewmodel）；viewmodelname ： {value:值，ele:{node:节点，cmd:指令}}
     this.compiler();
     this.parser();
     this.observer();
+}
+Rainier.prototype.treeInit = function(){            //将this._data生成对应的Datatree,方便接下来使用
+    
 }
 
 Rainier.prototype.compiler = function(){            //将页面上指令进行提取,将{{}}转换为指令，并用span包裹。（预处理阶段），获取_data,DOM元素，指令的对应,(v-model在这个地方做对应？)
@@ -66,23 +70,45 @@ Rainier.prototype.watcher = function(reactObj){
 
 Rainier.prototype.observer = function(){         //监控viewmodel的变化，调用updater进行view的刷新
     var self = this;
-    Object.keys(self.reactData).forEach(function(key){
-        Object.defineProperty(self._data, key, {
-            get : function(){
-                return self.reactData[key][0].val;
-            },
-            set : function(newVal) {
-                if(newVal !== self._data[key]) {
-                    self.reactData[key].forEach(function(){
-                        this.val = newVal; 
-                    })         
-                    for(var i = 0,l = self.reactData[key].length; i<l; i++){    //self表示该vm对象，key表示数据的名称，最后一个参数表示对应的映射对象
-                        updater.update(self, key, self.reactData[key][i]);
+    function observerFn(obj){
+        Object.keys(obj).forEach(function(key){
+            if(utils.typeOf(obj[key]) == 'object'){
+               observerFn(obj[key]);
+            }else{
+                Object.defineProperty(obj, key, {      
+                    get : function(){
+                        var top_key = utils.getTopName(self._cloneObj,key);
+                        return self._cloneObj[top_key];
+                        // self.reactData[top_key].forEach(function(item){
+                        //     var curArr = item.cmd_val.split(".");
+                        //     if(curArr[curArr.length-1] == key){
+                        //         return item.val;
+                        //     }
+                        // });
+                    },
+                    set : function(newVal) {
+                        var oldVal = utils.getValByKey(self._cloneObj,key);
+                        var top_key = utils.getTopName(self._cloneObj,key);
+                        //utils.setValByKey(self._cloneObj,key,newVal);
+                        if(newVal !== oldVal) {
+                            //self.reactData[top_key].forEach(function(item){
+                                //item.val = self._cloneObj[top_key];
+                                utils.setValByKey(self._cloneObj,key,newVal);
+                                // var curArr = item.cmd_val.split(".").length;
+                                // if(curArr[curArr.length-1] == key){
+                                //     item.val = newVal;
+                                // }
+                            //});
+                            for(var i = 0,l = self.reactData[top_key].length; i<l; i++){
+                                updater.update(self, top_key, self.reactData[top_key][i]);
+                            }
+                        }
                     }
-                }
+                })
             }
         })
-    })
+    }
+    observerFn(self._data);
 }
 var updater = (function(){                                  //指令不同的操作会调用不同的updater进行view的刷新
     var updateFn = {
@@ -162,7 +188,7 @@ var cmdHandler = function(){
             vm_temp_val = this._data[vm_name];
            
             tempArr = vm_name.split(".");
-            if(tempArr.length > 0){   //表示该变量是一个对象，且是其深节点层次的值
+            if(tempArr.length > 0){     //表示该变量是一个对象，且是其深节点层次的值
                 var tempArr = vm_name.split(".");
                 var temp = this._data[tempArr[0]];
                 for(var i = 1,l = tempArr.length; i < l; i++){
@@ -174,7 +200,7 @@ var cmdHandler = function(){
                 this.reactData[tempArr[0]] = [];
             }
             textEle = document.createTextNode(" ");
-            this.reactData[tempArr[0]].push({node:textEle,cmd_key:"ra-text",cmd_val:vm_name,val:this._data[tempArr[0]]});
+            this.reactData[tempArr[0]].push({node:textEle,cmd_key:"ra-text",cmd_val:vm_name,val:this._data[tempArr[0]]});     //vm_temp_val
             node.appendChild(textEle);
             node.removeAttribute('ra-text');
         },
@@ -248,14 +274,14 @@ var cmdHandler = function(){
     }
 }();
 
-var utils = {                                    //可能使用到的工具
-    trim : function(str){
+var utils = (function(){                                    //可能使用到的工具
+    function trim(str){
         return str.replace(/(^\s*)|(\s*$)/g,"");
-    },
-    checkPref : function(str,pref){              //检测字符串是否有某个前缀
+    }
+    function checkPref(str,pref){              //检测字符串是否有某个前缀
         return str.split("-")[0] === pref ? true : false;
-    },
-    typeOf : function(obj){                      //判断类型
+    }
+    function typeOf(obj){                      //判断类型
         if (typeof obj === "number") return "number";
         if (typeof obj === "undefined") return "undefined";
         if (typeof obj === "boolen") return "boolen";
@@ -266,8 +292,8 @@ var utils = {                                    //可能使用到的工具
             if(Object.prototype.toString.call(obj) == "[object Array]") return "array";
             return "object";
         }
-    },
-    getStyle : function(node,attr){                         //获取计算后的样式
+    }
+    function getStyle(node,attr){                         //获取计算后的样式
         if(typeof getComputedStyle != 'undefined'){
             var value = getComputedStyle(node,null).getPropertyValue(attr);
             return attr == 'opacity' ? value * 100 : value; //兼容不透明度，如果是不透明度，则返回整数方便计算
@@ -279,4 +305,119 @@ var utils = {                                    //可能使用到的工具
             }
         }
     }
-};
+    function isObj(object) {
+        return object && typeof (object) == 'object' && Object.prototype.toString.call(object).toLowerCase() == "[object object]";
+    }
+    function isArray(object) {
+        return object && typeof (object) == 'object' && object.constructor == Array;
+    }
+    function getLength(object) {
+        var count = 0;
+        for (var i in object) count++;
+        return count;
+    }
+    function CompareObj(objA, objB, flag) {
+        for (var key in objA) {
+            if (!flag) //跳出整个循环
+                break;
+            if (!objB.hasOwnProperty(key)) { flag = false; break; }
+            if (!isArray(objA[key])) { //子级不是数组时,比较属性值
+                if (objB[key] != objA[key]) { flag = false; break; }
+            } else {
+                if (!isArray(objB[key])) { flag = false; break; }
+                var oA = objA[key], oB = objB[key];
+                if (oA.length != oB.length) { flag = false; break; }
+                for (var k in oA) {
+                    if (!flag) //这里跳出循环是为了不让递归继续
+                        break;
+                    flag = CompareObj(oA[k], oB[k], flag);
+                }
+            }
+        }
+        return flag;
+    }
+    function Compare(objA, objB) {
+        if (!isObj(objA) || !isObj(objB)) return false; //判断类型是否正确
+        if (getLength(objA) != getLength(objB)) return false; //判断长度是否一致
+        return CompareObj(objA, objB, true);//默认为true
+    }
+    function getTopName(_data,key){
+        var answer = [];
+        function check_son(fa,goal,root){
+            var sons = Object.getOwnPropertyNames(fa);  
+            sons.forEach(function(son){
+                if(son == goal){
+                    answer.push(root ? root : son);
+                    return ;
+                }else if(typeOf(fa[son]) == 'object'){
+                    root = root ? root : son;
+                    check_son(fa[son],goal,root);
+                    root = null;
+                }
+            });
+        }
+        check_son(_data,key);
+        return answer[0];
+    }
+    function getValByKey(data,key){
+        var queue = [];
+        var node = data;
+        while(node != null){
+            if(node.hasOwnProperty(key)){
+                return node[key];
+            }else{
+                Object.keys(node).forEach(function(item){
+                    if(typeOf(node[item]) == "object"){
+                        queue.push(node[item]);
+                    }
+                });
+                node = queue.shift();
+            }
+        }
+        return -1;
+    }
+    function setValByKey(data,key,val){
+        var queue = [];
+        var node = data;
+        while(node != null){
+            if(node.hasOwnProperty(key)){
+                node[key] = val;
+                return;
+            }else{
+                Object.keys(node).forEach(function(item){
+                    if(typeOf(node[item]) == "object"){
+                        queue.push(node[item]);
+                    }
+                });
+                node = queue.shift();
+            }
+        }
+        return false;
+    }
+    function cloneObj(obj){
+        var str , newobj = obj.constructor === Array ? [] : {};
+        if(typeof obj !== "object"){
+            return;
+        }else if(window.JSON){
+            str = JSON.stringify(obj),
+            newobj = JSON.parse(str);
+        }else{
+            for(var i in obj){
+                newobj[i] = typeof obj[i] === "object" ? cloneObj(obj[i]) : obj[i];
+            }
+        }
+        return newobj;
+    }
+    return {
+        Compare : Compare,          //比较两个对象是否相同
+        trim : trim,
+        checkPref : checkPref,
+        typeOf : typeOf,
+        getStyle : getStyle,
+        getTopName : getTopName,
+        getValByKey : getValByKey,
+        setValByKey : setValByKey,
+        cloneObj : cloneObj
+        
+    }
+})();
