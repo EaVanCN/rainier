@@ -28,6 +28,8 @@ Rainier.prototype.compiler = function(){            //将页面上指令进行�
         html = html.replace(/\{\{(.*?)\}\}/g, function(a, b){    
             if(b.indexOf(".") > 0){
                 return '<span ra-deep="true" ra-textnode="'+ b +'"></span>';
+            }else if(b.indexOf("[" > 0)){
+                return '<span ra-array="true" ra-textnode="'+ b +'"></span>';
             }else{
                 return '<span ra-textnode="'+ b +'"></span>';
             }
@@ -35,6 +37,12 @@ Rainier.prototype.compiler = function(){            //将页面上指令进行�
         });
         ele.innerHTML = html;
     };
+    //需要先解析v-for
+    var forEles = document.querySelectorAll("[ra-for]");
+    for (var f = 0, l = forEles.length; f < l; f++) {
+        var curEle = forEles[f];
+        cmdHandler.reactCmdWithNode.call(self,"ra-for",curEle);                                  
+    }
     var eles = document.querySelectorAll("[ra-text],[ra-textnode],[ra-model],[ra-for],[ra-if],[ra-on],[ra-show]");
     for (var j = 0, l = eles.length; j < l; j++) {
         var curEle = eles[j];
@@ -77,28 +85,13 @@ Rainier.prototype.observer = function(){         //监控viewmodel的变化，�
             }else{
                 Object.defineProperty(obj, key, {      
                     get : function(){
-                        var top_key = utils.getTopName(self._cloneObj,key);
-                        return self._cloneObj[top_key];
-                        // self.reactData[top_key].forEach(function(item){
-                        //     var curArr = item.cmd_val.split(".");
-                        //     if(curArr[curArr.length-1] == key){
-                        //         return item.val;
-                        //     }
-                        // });
+                        return utils.getValByKey(self._cloneObj,key);
                     },
                     set : function(newVal) {
                         var oldVal = utils.getValByKey(self._cloneObj,key);
                         var top_key = utils.getTopName(self._cloneObj,key);
-                        //utils.setValByKey(self._cloneObj,key,newVal);
                         if(newVal !== oldVal) {
-                            //self.reactData[top_key].forEach(function(item){
-                                //item.val = self._cloneObj[top_key];
                                 utils.setValByKey(self._cloneObj,key,newVal);
-                                // var curArr = item.cmd_val.split(".").length;
-                                // if(curArr[curArr.length-1] == key){
-                                //     item.val = newVal;
-                                // }
-                            //});
                             for(var i = 0,l = self.reactData[top_key].length; i<l; i++){
                                 updater.update(self, top_key, self.reactData[top_key][i]);
                             }
@@ -122,6 +115,9 @@ var updater = (function(){                                  //指令不同的操
                 }
                 key_val = temp;
             }
+            if(reactObj.cmd_val.split("[").length > 0){
+
+            }
             reactObj.node.nodeValue = key_val;
         },
         "ra-text" : function(_vm, key, reactObj){
@@ -140,7 +136,7 @@ var updater = (function(){                                  //指令不同的操
             _vm.watcher(reactObj);
         },
         "ra-for" : function(_vm, key, reactObj){
-            reactObj.node.style = reactObj
+            reactObj.node.style = reactObj;     //未完成
         },
         "ra-if" : function(_vm, key, reactObj){
             if(_vm._data[reactObj.cmd_val]){
@@ -217,6 +213,7 @@ var cmdHandler = function(){
                 }
                 vm_temp_val = temp;
             }
+            
             if(!this.reactData[tempArr[0]]) {
                 this.reactData[tempArr[0]] = [];
             }
@@ -238,8 +235,11 @@ var cmdHandler = function(){
             if(!this.reactData[vm_name]) {
                 this.reactData[vm_name] = [];
             }
+//找到其中用于for循环的{{}}，然后与for循环体进行绑定
+
+
+
             this.reactData[vm_name].push({node:node,cmd_key:"ra-for",cmd_val:tempAttr,val:this._data[vm_name]});
-            node.removeAttribute('ra-for');
         },
         "ra-if" : function(node){
             vm_name = node.getAttribute('ra-if');
