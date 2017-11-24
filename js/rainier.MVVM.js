@@ -16,9 +16,6 @@ Rainier.prototype.init = function(option){
     this.parser();
     this.observer();
 }
-Rainier.prototype.treeInit = function(){            //将this._data生成对应的Datatree,方便接下来使用
-    
-}
 
 Rainier.prototype.compiler = function(){            //将页面上指令进行提取,将{{}}转换为指令，并用span包裹。（预处理阶段），获取_data,DOM元素，指令的对应,(v-model在这个地方做对应？)
     var self = this;
@@ -33,17 +30,16 @@ Rainier.prototype.compiler = function(){            //将页面上指令进行�
             }else{
                 return '<span ra-textnode="'+ b +'"></span>';
             }
-           
         });
         ele.innerHTML = html;
     };
-    //需要先解析v-for
+    //需要先解析ra-for
     var forEles = document.querySelectorAll("[ra-for]");
     for (var f = 0, l = forEles.length; f < l; f++) {
         var curEle = forEles[f];
-        cmdHandler.reactCmdWithNode.call(self,"ra-for",curEle);                                  
+        cmdHandler.reactCmdWithNode.call(self,"ra-for",curEle);
     }
-    var eles = document.querySelectorAll("[ra-text],[ra-textnode],[ra-model],[ra-for],[ra-if],[ra-on],[ra-show]");
+    var eles = document.querySelectorAll("[ra-text],[ra-textnode],[ra-model],[ra-if],[ra-on],[ra-show]");
     for (var j = 0, l = eles.length; j < l; j++) {
         var curEle = eles[j];
         var curEleAttrs = curEle.attributes;            //获取所有属性
@@ -136,7 +132,22 @@ var updater = (function(){                                  //指令不同的操
             _vm.watcher(reactObj);
         },
         "ra-for" : function(_vm, key, reactObj){
-            reactObj.node.style = reactObj;     //未完成
+            var forArrayName = reactObj.cmd_val.split(" ").pop();
+            var forArray = _vm._data[forArrayName];
+            //在插入之前首先将其来自于循环的兄弟节点全部删除，兄弟节点全部
+            while(reactObj.node.previousSibling && reactObj.node.previousSibling.nodeType != 3 && reactObj.node.previousSibling.getAttribute("isCloned")){
+                reactObj.node.previousSibling.parentNode.removeChild(reactObj.node.previousSibling);
+            }
+            for(var i = 0,l = forArray.length; i < l ; i++){   
+                reactObj.forNodes.forEach(function(item){
+                    item.nodeValue = forArray[i];
+                });
+                var cloneNode = reactObj.node.cloneNode(true);
+                cloneNode.setAttribute("isCloned","true");
+                cloneNode.removeAttribute("style");
+                reactObj.node.parentNode.insertBefore(cloneNode,reactObj.node);
+            }
+            reactObj.node.style.display = "none";
         },
         "ra-if" : function(_vm, key, reactObj){
             if(_vm._data[reactObj.cmd_val]){
@@ -213,7 +224,6 @@ var cmdHandler = function(){
                 }
                 vm_temp_val = temp;
             }
-            
             if(!this.reactData[tempArr[0]]) {
                 this.reactData[tempArr[0]] = [];
             }
@@ -235,11 +245,15 @@ var cmdHandler = function(){
             if(!this.reactData[vm_name]) {
                 this.reactData[vm_name] = [];
             }
-//找到其中用于for循环的{{}}，然后与for循环体进行绑定
-
-
-
-            this.reactData[vm_name].push({node:node,cmd_key:"ra-for",cmd_val:tempAttr,val:this._data[vm_name]});
+            var TxtNodes = node.querySelectorAll("[ra-array]"); //找到其中用于for循环的{{}}，然后与for循环体进行绑定
+            var nodeList = [];
+            TxtNodes.forEach(function(item){
+                var tempNode = document.createTextNode(" ");
+                nodeList.push(tempNode);
+                item.parentNode.replaceChild(tempNode,item);
+            });
+            this.reactData[vm_name].push({node:node,cmd_key:"ra-for",cmd_val:tempAttr,forNodes:nodeList,val:this._data[vm_name]});
+            node.removeAttribute('ra-for');
         },
         "ra-if" : function(node){
             vm_name = node.getAttribute('ra-if');
