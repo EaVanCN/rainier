@@ -4,6 +4,22 @@
 --------------------------------------------------------------------------------------------------------*/
 .ra-float{
     position: absolute;
-    border:1px solid #000;
     z-index:：9999;
+}
+.ra-float-con{
+    position: relative;
+    width: 100%;
+    height:100%;
+}
+.ra-float-btn{
+    position: absolute;
+    width:16px;
+    height:16px;
+    right:0;
+    top:0;
+    cursor:pointer;
+}
+.ra-float-img{
+    width:100%;
+    height:100%;
 }
