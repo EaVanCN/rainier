@@ -8,6 +8,11 @@ var Rainier = function(option){
 }
 Rainier.prototype.init = function(option){
     this._ele = typeof option.el == "string" ? document.querySelectorAll(option.el) : option.el;    //被绑定（mounted）的DOM
+    if(utils.typeOf(option.mounted) == "object"){               
+        Object.keys(option.mounted).forEach(function(item){
+            option.mounted[item].call(option);                      //执行mounted,常常在这里进行ajax的操作
+        })
+    }
     this._data = option.data || {};
     this._cloneObj = utils.cloneObj(this._data);                                                                 //model
     this._methods = option.methods || {};                                                           //可以绑定的方法（暂不实现）
@@ -16,7 +21,6 @@ Rainier.prototype.init = function(option){
     this.parser();
     this.observer();
 }
-
 Rainier.prototype.compiler = function(){            //将页面上指令进行提取,将{{}}转换为指令，并用span包裹。（预处理阶段），获取_data,DOM元素，指令的对应,(v-model在这个地方做对应？)
     var self = this;
     var textEle, vm_name, otherEles;                //textEle表示创建的文本节点，vm_name表示this._data中数据的名称;otherEles表示页面其他指令部分
