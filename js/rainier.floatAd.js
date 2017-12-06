@@ -1,12 +1,15 @@
 /*--------------------------------------------------------------------------------------------------------
                                     floatAd.js V1.0 	2016-11-25
-    适用于页面浮动广告的插件
+	适用于页面浮动广告的插件
+	引入js自动生成DOM，配置参数插入内容
+	可配置参数： width,height		//宽高,或者使用size数组为其设置
+				startPos		//起始位置
+				speed			//行进速度
+				dir				//方向（可选：0,45,90,135,180以及其负值）
+				closeBtn   		//布尔值是否有关闭按钮
+				link			//是否有链接，如果设置该属性，该属性的值就是链接的地址
+	链接还未添加			
 --------------------------------------------------------------------------------------------------------*/
-//引入js自动生成DOM，配置参数插入内容
-
-
-//3种方式，1是图片模式，2是文字模式,捕获方式：将页面上的某一部分当做悬浮内容进行飘动
-//其他可配置参数包括：大小，漂浮的速度，是否可关闭，链接内容（如果不填就无链接），背景图片，"文字方式"的文字内容,"图片方式的图片"，捕获元素的获取
 (function($){
 	var raFloatAd = function(options){
 		this.interval = null;
@@ -17,10 +20,13 @@
 	}
 	raFloatAd.prototype.init = function(options){
 		var deg = options.dir;
-		//this.Xdir = Math.sin(deg*0.017453293);
-		//this.Ydir = -(Math.cos(deg*0.017453293));
-		this.Xdir = 1;
-		this.Ydir = 1;
+		if(utils.getDir(deg)[0]){
+			this.Xdir = utils.getDir(deg)[0];
+			this.Ydir = utils.getDir(deg)[1];
+		}else{
+			console.log("您的角度设置不合理，请设置0,45,90,135,180,-45,-90,-135,180");
+		}
+		this.speed = options.speed;
 		var adWidth = options.size[0] || options.width;
 		var adHeight = options.size[1] || options.height;
 		var adLeft = options.startPos[0];
@@ -41,12 +47,21 @@
 			closeDOM.appendChild(closeIMG);
 			contentDOM.appendChild(closeDOM);
 		}
-
+		if(options.link){			//有链接
+			var adLink = this.adLink = document.createElement("a");
+			adLink.setAttribute("href",options.link);
+			adLink.setAttribute("target","_blank");
+			contentDOM.appendChild(adLink);
+		}
 		if(options.type == "img"){
 			var adIMG = this.adIMG = document.createElement("img");
 			adIMG.setAttribute("src",options.src);
 			adIMG.setAttribute("class","ra-float-img");
-			contentDOM.appendChild(adIMG);
+			if(adLink){
+				adLink.appendChild(adIMG);
+			}else{
+				contentDOM.appendChild(adIMG);
+			}
 		}
 		adDOM.appendChild(contentDOM);
 		var body = document.getElementsByTagName("body")[0];
@@ -70,8 +85,7 @@
 	raFloatAd.prototype.start = function(){		//设置定时器，开始运动
 		var self = this;
 		function adMove(){
-			var step = 1;
-
+			var step = self.speed;
 			var adLeft = parseInt(utils.getStyle(self.adDOM,"left"));	//元素当前所处的位置
 			var adTop = parseInt(utils.getStyle(self.adDOM,"top"));
 			var adWidth = parseInt(utils.getStyle(self.adDOM,"width"));
@@ -81,7 +95,6 @@
 			var scrolltop = utils.getScrollTop();
 			var clientWidth = utils.getClientWidth();
 			var clientHeight = utils.getClientHeight();
-			console.log(scrollLeft +"---"+scrolltop+"---"+clientWidth+"---"+clientHeight);
 
 			var leftDev = self.Xdir * step;		//水平方向偏移量
 			var topDev = self.Ydir * step;		//垂直方向偏移量
@@ -102,8 +115,6 @@
 				adLeft = scrollLeft + clientWidth - adWidth;
 				self.adDOM.style.left = adLeft + "px";
 			};
-
-
 			if(adLeft + adWidth + leftDev >= clientWidth + scrollLeft || adLeft+leftDev <= scrollLeft){		//以下两个判断用于在要出屏幕后进行方向的修正
 				self.Xdir = -(self.Xdir);
 			}
@@ -167,12 +178,61 @@
 			}
 			return clientWidth;
 		}
+		function getDir(deg){
+			var Xdir,Ydir;
+			deg = deg % 360;	//处理一下数据，求模
+			if(deg >= 180){
+				deg = deg-180;
+			}
+			switch(deg){
+				case 0 :
+					Xdir = 0;
+					Ydir = -1;
+					break;
+				case 45 :
+					Xdir = 1;
+					Ydir = -1;
+					break;
+				case 90 :
+					Xdir = 1;
+					Ydir = 0;
+					break;
+				case 135 :
+					Xdir = 1;
+					Ydir = 1;
+					break;
+				case 180 :
+					Xdir = 0;
+					Ydir = 1;				
+					break;
+				case -45 :
+					Xdir = -1;
+					Ydir = -1;									
+					break;
+				case -90 :
+					Xdir = -1;
+					Ydir = 0;															
+					break;
+				case -135 :
+					Xdir = -1;
+					Ydir = 1;																						
+					break;
+				case -180 :
+					Xdir = 0;
+					Ydir = 1;
+					break;
+				default:
+				return false;
+			}
+			return [Xdir,Ydir];
+		}
 		return {
 			getStyle : getStyle,
 			getScrollTop : getScrollTop,
 			getClientHeight : getClientHeight,
 			getScrollLeft : getScrollLeft,
 			getClientWidth : getClientWidth,
+			getDir : getDir			//根据角度,获取其应该的方向参数
 		}
 	})();
 	
@@ -219,12 +279,12 @@
 	$.extend({
 		"floatAd":function(options){
 			options = $.extend({
-                width : 318,
+                width : 318,		//默认宽高
 				height: 128,
+				size: [,],			//支持使用数组的形式为其传入宽高
 				startPos: [10,10],
-				size: [,],
-				speed: 1,			//行进速度，暂未使用
-				dir : 135,			//dir表示角度，暂未完成
+				speed: 1,			//行进速度
+				dir : 135,			//dir表示角度，暂设8个方向，垂直向上为0，水平往右为90，以此类推（可选：0,45,90,135,180以及其负值）
 				closeBtn : true		//是否有closeBtn
 			},options);
 			new raFloatAd(options);
