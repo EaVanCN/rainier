@@ -6,7 +6,7 @@
 	eventname 可选择触发方式：	click --- 点击触发
 								mouserover --- 悬浮触发
 								mousedown --- 点击触发，松开消失(暂有问题，不推荐使用)
-	effect 可选择呈现形式：	normal --- 在元素中指定data-direction，将在指定方向出tip
+	effect 可选择呈现形式：		normal --- 在元素中指定data-direction，将在指定方向出tip
 							follow --- 在元素中不指定方向，会在鼠标下面进行跟随
 	direction: 	用于指定出现的位置。dom中的data-direction具有更高的效力，否则按照插件列表中的direction参
 				数走，如果二者都没有设置，则tip会出现在右侧
