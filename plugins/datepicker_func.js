@@ -1,30 +1,30 @@
-function myY(){
+function raY(){
     WdatePicker({
         dateFmt : 'yyyy',
         readOnly : true
     });
 }
-function myYM(){
+function raYM(){
     WdatePicker({
         dateFmt : 'yyyy-MM',
         readOnly : true
     });
 }
-function myYMD(){
+function raYMD(){
     WdatePicker({
         dateFmt : 'yyyy-MM-dd',
         isShowWeek : true,
         readOnly : true
     });
 }
-function myYMDH(){
+function raYMDH(){
     WdatePicker({
         dateFmt : 'yyyy-MM-dd HH:mm:ss',
         isShowWeek : true,
         readOnly : true
     });
 }
-function myH() {
+function raH() {
     WdatePicker({
         dateFmt : 'HH:mm:00',
         isShowToday : false,
@@ -32,7 +32,7 @@ function myH() {
         readOnly : true
     });
 }
-function myYMDSinceNow() {
+function raYMDSinceNow() {
     WdatePicker({
         dateFmt : 'yyyy-MM-dd',
         readOnly : true,
@@ -40,7 +40,7 @@ function myYMDSinceNow() {
         minDate : '%y-%M-%d'
     });
 }
-function myYMDSince(date) {
+function raYMDSince(date) {
     WdatePicker({
         dateFmt : 'yyyy-MM-dd',
         readOnly : true,
@@ -48,7 +48,7 @@ function myYMDSince(date) {
         minDate : date
     });
 }
-function myYMDUntilNow() {
+function raYMDUntilNow() {
     WdatePicker({
         dateFmt : 'yyyy-MM-dd',
         readOnly : true,
@@ -56,7 +56,7 @@ function myYMDUntilNow() {
         maxDate : '%y-%M-%d'
     });
 }
-function myYMDUntil(date) {
+function raYMDUntil(date) {
     WdatePicker({
         dateFmt : 'yyyy-MM-dd',
         readOnly : true,
@@ -64,7 +64,7 @@ function myYMDUntil(date) {
         maxDate : date
     });
 }
-function myYMDBetween(startDate,endDate) {
+function raYMDBetween(startDate,endDate) {
     WdatePicker({
         dateFmt : 'yyyy-MM-dd',
         readOnly : true,
